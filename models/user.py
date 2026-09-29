@@ -1,5 +1,5 @@
 # models/user.py
-from sqlalchemy import Column, Integer, String, Date
+from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 from .base import BaseModel
 from passlib.context import CryptContext
@@ -18,9 +18,6 @@ class UserModel(BaseModel):
     email = Column(String, unique=True)  # Each email must be unique
     password = Column(String, nullable=True)
 
-    # optional date of birth
-    birthdate = Column(Date, nullable=True)
-
     # one user has many games
     games = relationship("GameModel", back_populates="user")
 
@@ -38,6 +35,8 @@ class UserModel(BaseModel):
         "exp": datetime.now(timezone.utc) + timedelta(days=1),  # Expiration time (1 day)
         "iat": datetime.now(timezone.utc),  # Issued at time
         "sub": str(self.id),  # Subject - the user ID
+        # so the front end can show who is signed in
+        "username": self.username,
         }
 
         token = jwt.encode(payload, JWT_SECRET, algorithm="HS256")
