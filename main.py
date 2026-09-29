@@ -3,6 +3,7 @@
 from dotenv import load_dotenv
 load_dotenv()
 
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from controllers.games import router as GamesRouter
@@ -11,12 +12,10 @@ from controllers.users import router as UsersRouter
 
 app = FastAPI()
 
-# front-end addresses allowed to call this api
+# front-end addresses allowed to call this api, read from .env
 origins = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
+    origin.strip() for origin in os.getenv("CORS_ORIGINS", "").split(",")
+    if origin.strip()
 ]
 
 # let those front-ends make requests to the api
