@@ -1,5 +1,5 @@
 # models/user.py
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Date
 from sqlalchemy.orm import relationship
 from .base import BaseModel
 from passlib.context import CryptContext
@@ -17,6 +17,9 @@ class UserModel(BaseModel):
     username = Column(String, unique=True)  # Each username must be unique
     email = Column(String, unique=True)  # Each email must be unique
     password = Column(String, nullable=True)
+
+    # optional date of birth
+    birthdate = Column(Date, nullable=True)
 
     # one user has many games
     games = relationship("GameModel", back_populates="user")
