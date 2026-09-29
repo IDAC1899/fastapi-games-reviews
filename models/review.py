@@ -2,6 +2,7 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 from .base import BaseModel
+from .user import UserModel
 
 class ReviewModel(BaseModel):
 
@@ -14,3 +15,7 @@ class ReviewModel(BaseModel):
     # each review belongs to one game, and gets deleted if its game is deleted
     game_id = Column(Integer, ForeignKey("games.id", ondelete="CASCADE"), nullable=False)
     game = relationship("GameModel", back_populates="reviews", passive_deletes=True)
+
+    # each review belongs to the user who wrote it
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    user = relationship("UserModel", back_populates="reviews")
